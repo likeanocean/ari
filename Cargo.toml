@@ -1,0 +1,24 @@
+[package]
+name = "ari"
+version  = "0.0.1"
+authors  = ["ari <ari@sent.com>"]
+description  = "ari. the extras library."
+
+edition  = "2018"
+
+documentation = "https://docs.rs/ari"
+license  = "MIT/Apache-2.0"
+
+keywords = []
+categories = []
+
+[dependencies]
+num-traits = "0.2.8"
+parking_lot  = { version = "0.9.0", features = ["nightly"] }
+rand = "0.7.0"
+ring = "0.16.7"
+unicode-width = "0.1.5"
+winapi = { version = "0.3.7", features = ["std", "consoleapi", "dwmapi", "processenv", "unknwnbase", "sysinfoapi"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2.61"
