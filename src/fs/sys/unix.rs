@@ -31,8 +31,8 @@ crate fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
 ))]
 crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
     match unsafe { libc::posix_fallocate(file.as_raw_fd(), 0, size as libc::off_t) } == 0 {
-        0 => Ok(()),
-        _ => Err(std::io::Error::last_os_error()),
+        true => Ok(()),
+        false => Err(std::io::Error::last_os_error()),
     }
 }
 
