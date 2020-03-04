@@ -13,12 +13,15 @@ keywords = []
 categories = []
 
 [dependencies]
-num-traits = "0.2.8"
-parking_lot  = { version = "0.9.0", features = ["nightly"] }
-rand = "0.7.0"
-ring = "0.16.7"
-unicode-width = "0.1.5"
-winapi = { version = "0.3.7", features = ["std", "consoleapi", "dwmapi", "processenv", "unknwnbase", "sysinfoapi"] }
+num-traits = "0.2.11"
+parking_lot  = { version = "0.10.0", features = ["nightly"] }
+rand = "0.7.3"
+ring = "0.16.11"
+unicode-width = "0.1.7"
+winapi = { version = "0.3.8", features = ["std", "consoleapi", "dwmapi", "processenv", "unknwnbase", "sysinfoapi"] }
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2.61"
+
+[package.metadata.docs.rs]
+default-target = "x86_64-pc-windows-msvc"

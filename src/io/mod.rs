@@ -2,6 +2,7 @@ pub mod stdin;
 
 
 use std::io::{Read, Seek, SeekFrom};
+use std::mem::MaybeUninit;
 
 
 pub trait ReadExt: Read {
@@ -43,20 +44,20 @@ pub trait ReadExt: Read {
     #[inline]
     fn read_bytes_16(&mut self) -> Result<[u8; 16], std::io::Error> {
         unsafe {
-            let mut data = std::mem::uninitialized::<[u8; 16]>();
+            let mut data = MaybeUninit::<[u8; 16]>::uninit();
 
-            self.read_exact(&mut data)?;
-            Ok(data)
+            self.read_exact(&mut *data.as_mut_ptr())?;
+            Ok(data.assume_init())
         }
     }
 
     #[inline]
     fn read_bytes_32(&mut self) -> Result<[u8; 32], std::io::Error> {
         unsafe {
-            let mut data = std::mem::uninitialized::<[u8; 32]>();
+            let mut data = MaybeUninit::<[u8; 32]>::uninit();
 
-            self.read_exact(&mut data)?;
-            Ok(data)
+            self.read_exact(&mut *data.as_mut_ptr())?;
+            Ok(data.assume_init())
         }
     }
 }
