@@ -1,5 +1,4 @@
 #![feature(
-    asm,
     box_syntax,
     const_fn,
     crate_visibility_modifier,
@@ -8,6 +7,7 @@
     specialization,
     stmt_expr_attributes
 )]
+#![cfg_attr(feature = "asm", feature(llvm_asm))]
 
 #[macro_use]
 pub mod macros;

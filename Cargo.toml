@@ -1,6 +1,6 @@
 [package]
 name = "ari"
-version  = "0.0.4"
+version  = "0.0.5"
 authors  = ["ari <ari@sent.com>"]
 description  = "ari. the extras library."
 
@@ -12,9 +12,13 @@ license  = "MIT/Apache-2.0"
 keywords = []
 categories = []
 
+[features]
+default = []
+asm = ["parking_lot/nightly"]
+
 [dependencies]
 num-traits = "0.2.11"
-parking_lot  = { version = "0.10.0", features = ["nightly"] }
+parking_lot = { version = "0.11.0" }
 rand = "0.7.3"
 ring = "0.16.12"
 unicode-width = "0.1.7"
