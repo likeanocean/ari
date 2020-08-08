@@ -3,9 +3,7 @@ use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 use std::ops::{Deref, DerefMut};
 
-
 static INITIALIZED: Once = Once::new();
-
 
 /// initializes `ari`, setting up the environment for use.
 pub fn initialize() {
@@ -14,41 +12,29 @@ pub fn initialize() {
     });
 }
 
-
 /// returns true if `ari` has been initialized.
 pub fn initialized() -> bool {
     INITIALIZED.state() != OnceState::Done
 }
 
-
-
 /// keep `x`, preventing llvm from optimizing it away.
+#[cfg(feature = "asm")]
 pub fn keep<T>(x: T) -> T {
-    unsafe { asm!["" : : "r"(&x)] }
+    unsafe { llvm_asm!["" : : "r"(&x)] }
     x
 }
 
-
-
 // asserts (at compile time) that some object is `Sync` or `Send`.
-pub fn assert_send(_: impl Send) {
-}
+pub fn assert_send(_: impl Send) {}
 
-pub fn assert_sync(_: impl Sync) {
-}
+pub fn assert_sync(_: impl Sync) {}
 
-pub fn assert_send_sync(_: impl Send + Sync) {
-}
-
-
+pub fn assert_send_sync(_: impl Send + Sync) {}
 
 /// a trait that encompasses all types.
 pub trait Any {}
 
-impl<T> Any for T {
-}
-
-
+impl<T> Any for T {}
 
 /// an opaque error that be converted from any other error type.
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
@@ -74,7 +60,6 @@ where
         BlackHole
     }
 }
-
 
 /// a wrapper type that ensures its wrapped item implements debug.
 pub struct DefaultDebug<T>(pub T);
@@ -111,8 +96,6 @@ impl<T> DerefMut for DefaultDebug<T> {
     }
 }
 
-
-
 /// returns a slice as an array, if `byte_length(array) == byte_length(slice)`. this function is unsafe because `T` may
 /// not be a memcopy-safe type.
 ///
@@ -131,8 +114,6 @@ where
         false => None,
     }
 }
-
-
 
 /// convert a singular `T` into a single element slice of `T`.
 pub fn as_slice<T>(item: &T) -> &[T] {
@@ -161,7 +142,6 @@ pub fn option_as_slice_mut<T>(value: &mut Option<T>) -> &mut [T] {
         None => &mut [],
     }
 }
-
 
 /// a bitfield.
 ///
@@ -198,7 +178,7 @@ pub struct BitField<TStorage, TAlignment>
 where
     TStorage: AsRef<[u8]> + AsMut<[u8]>,
 {
-    storage:   TStorage,
+    storage: TStorage,
     alignment: [TAlignment; 0],
 }
 
@@ -219,7 +199,10 @@ where
     /// ```
     #[inline]
     pub fn new(storage: TStorage) -> Self {
-        BitField { storage, alignment: [] }
+        BitField {
+            storage,
+            alignment: [],
+        }
     }
 
     /// retrieves the bit at `index`.
@@ -304,7 +287,11 @@ where
 
         for i in 0..width {
             if self.get(offset + i) {
-                let shift = if cfg!(target_endian = "big") { width - i - 1 } else { i };
+                let shift = if cfg!(target_endian = "big") {
+                    width - i - 1
+                } else {
+                    i
+                };
 
                 value |= 1 << shift;
             }
@@ -356,7 +343,11 @@ where
         debug_assert![storage.len() > (offset + width) / 8];
 
         for i in 0..width {
-            let index = if cfg!(target_endian = "big") { width - i - 1 } else { i };
+            let index = if cfg!(target_endian = "big") {
+                width - i - 1
+            } else {
+                i
+            };
             let mask = 1 << i;
 
             self.set(index + offset, value & mask != 0);
@@ -386,8 +377,6 @@ where
     }
 }
 
-
-
 /// extensions to `std::vec::Vec`.
 pub trait VecExt {
     /// clears this `Vec<t>`. if `T` is copy, this method optimizes the clear by truncating the vec's length to zero,
@@ -401,7 +390,6 @@ impl<T> VecExt for Vec<T> {
     }
 }
 
-
 impl<T> VecExt for Vec<T>
 where
     T: Copy,
@@ -413,8 +401,6 @@ where
         }
     }
 }
-
-
 
 /// extensions to `bool`.
 pub trait BoolExt {
