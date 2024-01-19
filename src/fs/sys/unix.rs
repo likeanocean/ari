@@ -9,7 +9,7 @@ use crate::fs::VolumeInformation;
 
 
 /// returns the number of bytes allocated for this file.
-crate fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
+pub(crate) fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
     file.metadata().map(|x| x.blocks() as u64 * 512)
 }
 
@@ -29,7 +29,7 @@ crate fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
     target_os = "emscripten",
     target_os = "nacl"
 ))]
-crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
+pub(crate) fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
     match unsafe { libc::posix_fallocate(file.as_raw_fd(), 0, size as libc::off_t) } == 0 {
         true => Ok(()),
         false => Err(std::io::Error::last_os_error()),
@@ -37,7 +37,7 @@ crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Erro
 }
 
 #[cfg(any(target_os = "macos", target_os = "ios"))]
-crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
+pub(crate) fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
     let metadata = file.metadata()?;
 
     if size > metadata.blocks() as u64 * 512 {
@@ -69,13 +69,13 @@ crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Erro
     target_os = "solaris",
     target_os = "haiku"
 ))]
-crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
+pub(crate) fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
     // no allocation api is available on these operating systems.
     Ok(())
 }
 
 
-crate fn get_volume_information(path: &Path) -> Result<VolumeInformation, std::io::Error> {
+pub(crate) fn get_volume_information(path: &Path) -> Result<VolumeInformation, std::io::Error> {
     let data = path.as_os_str().as_bytes();
     let string = match CString::new(data) {
         Ok(x) => x,
