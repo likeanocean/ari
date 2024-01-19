@@ -5,7 +5,7 @@ use winapi::um::processenv::GetStdHandle;
 use winapi::um::winbase::STD_OUTPUT_HANDLE;
 use winapi::um::wincon::ENABLE_VIRTUAL_TERMINAL_PROCESSING;
 
-crate fn enable_vt_mode() -> bool {
+pub(crate) fn enable_vt_mode() -> bool {
     unsafe {
         let handle = GetStdHandle(STD_OUTPUT_HANDLE);
 

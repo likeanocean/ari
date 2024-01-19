@@ -23,7 +23,7 @@ macro_rules! activate {
 }
 
 
-crate fn activate_dpi_awareness() {
+pub(crate) fn activate_dpi_awareness() {
     type SetProcessDpiAwareness = extern "system" fn(value: u32) -> HRESULT;
     type SetProcessDpiAwarenessContext = extern "system" fn(value: usize) -> BOOL;
 

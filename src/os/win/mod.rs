@@ -23,13 +23,12 @@ use winapi::um::winnt::OSVERSIONINFOW;
 
 // :: initialization.
 
-crate fn initialize() {
+pub(crate) fn initialize() {
     crate::os::win::internal::wer::disable_windows_error_reporting();
     crate::os::win::internal::vt::enable_vt_mode();
     crate::os::win::internal::dpi::activate_dpi_awareness();
 }
 
-// :: string-related methods.
 
 pub fn to_utf16(string: impl AsRef<OsStr>) -> Vec<u16> {
     string.as_ref().encode_wide().collect()
