@@ -1,4 +1,4 @@
-crate mod dpi;
-crate mod ntdll;
-crate mod vt;
-crate mod wer;
+pub(crate) mod dpi;
+pub(crate) mod ntdll;
+pub(crate) mod vt;
+pub(crate) mod wer;

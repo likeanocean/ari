@@ -13,7 +13,7 @@ use crate::fs::VolumeInformation;
 
 
 /// returns the number of bytes allocated for this file.
-crate fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
+pub(crate) fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
     unsafe {
         let mut info = std::mem::zeroed::<FILE_STANDARD_INFO>();
 
@@ -31,7 +31,7 @@ crate fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
 
 /// allocates at least `size` bytes for this file. if the existing allocation is greater than `length`, then this method
 /// has no effect.
-crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
+pub(crate) fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
     if get_allocation_size(file)? < size {
         unsafe {
             let mut info = std::mem::zeroed::<FILE_ALLOCATION_INFO>();
@@ -53,7 +53,7 @@ crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Erro
     }
 }
 
-crate fn get_volume_information(path: &Path) -> Result<VolumeInformation, std::io::Error> {
+pub(crate) fn get_volume_information(path: &Path) -> Result<VolumeInformation, std::io::Error> {
     let volume: &mut [u16] = &mut [0; 265];
 
     unsafe {

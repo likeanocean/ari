@@ -1,9 +1,5 @@
 #![feature(
-    box_syntax,
-    const_fn,
-    crate_visibility_modifier,
     exclusive_range_pattern,
-    in_band_lifetimes,
     specialization,
     stmt_expr_attributes
 )]
