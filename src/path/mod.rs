@@ -4,7 +4,6 @@ pub mod util;
 
 
 pub use self::ext::*;
-pub use self::macros::*;
 
 
 use std::borrow::Cow;

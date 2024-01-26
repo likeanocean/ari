@@ -1,13 +1,13 @@
 [package]
 name = "ari"
-version  = "0.0.5"
-authors  = ["ari <ari@sent.com>"]
-description  = "ari. the extras library."
+version = "0.0.5"
+authors = ["ari <ari@sent.com>"]
+description = "ari. the extras library."
 
-edition  = "2018"
+edition = "2018"
 
 documentation = "https://docs.rs/ari"
-license  = "MIT/Apache-2.0"
+license = "MIT/Apache-2.0"
 
 keywords = []
 categories = []
@@ -17,15 +17,30 @@ default = []
 asm = ["parking_lot/nightly"]
 
 [dependencies]
-num-traits = "0.2.11"
-parking_lot = { version = "0.11.0" }
-rand = "0.7.3"
-ring = "0.16.12"
-unicode-width = "0.1.7"
-winapi = { version = "0.3.8", features = ["std", "consoleapi", "dwmapi", "processenv", "unknwnbase", "sysinfoapi"] }
+num-traits = "0.2.17"
+parking_lot = { version = "0.12.1" }
+rand = "0.8.5"
+ring = "0.17.7"
+unicode-width = "0.1.11"
+
+[dependencies.winapi]
+version = "0.3.9"
+features = [
+    "std",
+    "consoleapi",
+    "dwmapi",
+    "errhandlingapi",
+    "fileapi",
+    "handleapi",
+    "processenv",
+    "sysinfoapi",
+    "unknwnbase",
+    "winbase",
+    "winerror",
+]
 
 [target.'cfg(unix)'.dependencies]
-libc = "0.2.68"
+libc = "0.2.152"
 
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"
