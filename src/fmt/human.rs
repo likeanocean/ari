@@ -1,7 +1,6 @@
 use std::fmt::{Display, Formatter};
 use std::time::Duration;
 
-
 pub struct FormattedDuration(pub Duration);
 
 impl Display for FormattedDuration {
@@ -18,12 +17,15 @@ impl Display for FormattedDuration {
         t /= 24;
 
         match t {
-            t if t > 0 => write!(formatter, "{}d {:02}:{:02}:{:02}", t, hours, minutes, seconds),
+            t if t > 0 => write!(
+                formatter,
+                "{}d {:02}:{:02}:{:02}",
+                t, hours, minutes, seconds
+            ),
             _ => write!(formatter, "{:02}:{:02}:{:02}", hours, minutes, seconds),
         }
     }
 }
-
 
 pub struct HumanDuration(pub Duration);
 
@@ -37,10 +39,10 @@ impl Display for HumanDuration {
                 let count = seconds / $seconds;
 
                 match (alternate, count) {
-                    (true, 0) => {},
+                    (true, 0) => {}
                     (true, 1) => return write!(formatter, "{}{}", count, $shorthand),
                     (true, _) => return write!(formatter, "{}{}", count, $shorthand),
-                    (false, 0) => {},
+                    (false, 0) => {}
                     (false, 1) => return write!(formatter, "{} {}", count, $singular),
                     (false, _) => return write!(formatter, "{} {}", count, $plural),
                 }
@@ -58,8 +60,6 @@ impl Display for HumanDuration {
     }
 }
 
-
-
 #[derive(Clone, Copy, Debug)]
 pub struct HumanBytes(pub u64);
 
@@ -70,8 +70,6 @@ impl Display for HumanBytes {
         Display::fmt(&HumanDetailedBytes(self.0, DEFAULT_PLACES), formatter)
     }
 }
-
-
 
 #[derive(Clone, Copy, Debug)]
 pub struct HumanDetailedBytes(pub u64, pub usize);

@@ -1,9 +1,7 @@
 // sip implementation ripped out of `libcore` since it's been removed / deprecated.
 
-
 use std::hash::Hasher;
 use std::marker::PhantomData;
-
 
 /// an implementation of siphash 2-4.
 ///
@@ -25,16 +23,14 @@ pub struct SipHasher13 {
     hasher: HashBase<Sip13Rounds>,
 }
 
-
-
 #[derive(Debug)]
 struct HashBase<S: Sip> {
-    k0:     u64,
-    k1:     u64,
+    k0: u64,
+    k1: u64,
     length: usize, // how many bytes we've processed
-    state:  State, // hash state
-    tail:   u64,   // unprocessed bytes le
-    ntail:  usize, // how many bytes in tail are valid
+    state: State,  // hash state
+    tail: u64,     // unprocessed bytes le
+    ntail: usize,  // how many bytes in tail are valid
     marker: PhantomData<S>,
 }
 
@@ -50,10 +46,10 @@ struct State {
     v3: u64,
 }
 
-
-
 macro_rules! compress {
-    ($state: expr) => {{ compress!($state.v0, $state.v1, $state.v2, $state.v3) }};
+    ($state: expr) => {{
+        compress!($state.v0, $state.v1, $state.v2, $state.v3)
+    }};
 
     ($v0: expr, $v1: expr, $v2: expr, $v3: expr) => {{
         $v0 = $v0.wrapping_add($v1);
@@ -94,8 +90,6 @@ macro_rules! load_int_le {
     }};
 }
 
-
-
 /// load an u64 using up to 7 bytes of a byte slice.
 ///
 /// unsafe because: unchecked indexing at start..start+len
@@ -125,8 +119,6 @@ unsafe fn u8to64_le(buf: &[u8], start: usize, len: usize) -> u64 {
     debug_assert_eq!(i, len);
     out
 }
-
-
 
 impl SipHasher24 {
     /// creates a new `siphasher24` with the two initial keys set to 0.
@@ -160,23 +152,21 @@ impl SipHasher13 {
     }
 }
 
-
-
 impl<S: Sip> HashBase<S> {
     #[inline]
     fn new_with_keys(key0: u64, key1: u64) -> HashBase<S> {
         let mut state = HashBase {
-            k0:     key0,
-            k1:     key1,
+            k0: key0,
+            k1: key1,
             length: 0,
-            state:  State {
+            state: State {
                 v0: 0,
                 v1: 0,
                 v2: 0,
                 v3: 0,
             },
-            tail:   0,
-            ntail:  0,
+            tail: 0,
+            ntail: 0,
             marker: PhantomData,
         };
         state.reset();
@@ -228,8 +218,6 @@ impl<S: Sip> HashBase<S> {
     }
 }
 
-
-
 impl Hasher for SipHasher24 {
     #[inline]
     fn write(&mut self, data: &[u8]) {
@@ -254,14 +242,15 @@ impl Hasher for SipHasher13 {
     }
 }
 
-
-
 impl<S: Sip> Hasher for HashBase<S> {
     // see short_write comment for explanation
     #[inline]
     fn write_usize(&mut self, i: usize) {
         self.short_write(unsafe {
-            std::slice::from_raw_parts(&i as *const usize as *const u8, std::mem::size_of::<usize>())
+            std::slice::from_raw_parts(
+                &i as *const usize as *const u8,
+                std::mem::size_of::<usize>(),
+            )
         });
     }
 
@@ -280,7 +269,8 @@ impl<S: Sip> Hasher for HashBase<S> {
 
         if self.ntail != 0 {
             needed = 8 - self.ntail;
-            self.tail |= unsafe { u8to64_le(data, 0, std::cmp::min(length, needed)) << 8 * self.ntail };
+            self.tail |=
+                unsafe { u8to64_le(data, 0, std::cmp::min(length, needed)) << 8 * self.ntail };
 
             if length < needed {
                 self.ntail += length;
@@ -333,12 +323,12 @@ impl<S: Sip> Clone for HashBase<S> {
     #[inline]
     fn clone(&self) -> HashBase<S> {
         HashBase {
-            k0:     self.k0,
-            k1:     self.k1,
+            k0: self.k0,
+            k1: self.k1,
             length: self.length,
-            state:  self.state,
-            tail:   self.tail,
-            ntail:  self.ntail,
+            state: self.state,
+            tail: self.tail,
+            ntail: self.ntail,
             marker: self.marker,
         }
     }
@@ -351,8 +341,6 @@ impl<S: Sip> Default for HashBase<S> {
         HashBase::new_with_keys(0, 0)
     }
 }
-
-
 
 trait Sip {
     fn c_rounds(_: &mut State);

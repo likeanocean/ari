@@ -1,8 +1,4 @@
-#![feature(
-    exclusive_range_pattern,
-    specialization,
-    stmt_expr_attributes
-)]
+#![feature(exclusive_range_pattern, specialization, stmt_expr_attributes)]
 #![cfg_attr(feature = "asm", feature(llvm_asm))]
 
 #[macro_use]

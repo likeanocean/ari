@@ -4,7 +4,6 @@ use std::ops::Deref;
 use winapi::shared::minwindef::{FARPROC, HMODULE};
 use winapi::um::libloaderapi::{GetModuleHandleW, GetProcAddress, LoadLibraryW};
 
-
 pub fn module_handle(name: &str) -> Option<HMODULE> {
     unsafe {
         let name = crate::os::win::to_utf16_null(name);
@@ -16,7 +15,6 @@ pub fn module_handle(name: &str) -> Option<HMODULE> {
         }
     }
 }
-
 
 #[derive(Debug)]
 pub struct Library {
@@ -53,7 +51,6 @@ impl Library {
     }
 }
 
-
 #[derive(Clone)]
 pub struct Symbol<T> {
     pointer: FARPROC,
@@ -79,8 +76,6 @@ impl<T> Debug for Symbol<T> {
     }
 }
 
-unsafe impl<T: Send> Send for Symbol<T> {
-}
+unsafe impl<T: Send> Send for Symbol<T> {}
 
-unsafe impl<T: Sync> Sync for Symbol<T> {
-}
+unsafe impl<T: Sync> Sync for Symbol<T> {}

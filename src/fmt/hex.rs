@@ -1,6 +1,5 @@
 use std::fmt::{Debug, Display, Formatter, LowerHex, UpperHex};
 
-
 pub fn to_hex(data: &[u8]) -> String {
     format!("{:x}", HexSlice(data))
 }
@@ -39,8 +38,6 @@ pub fn from_hex(string: &str) -> Result<Vec<u8>, std::io::Error> {
         _ => Err(std::io::ErrorKind::InvalidInput.into()),
     }
 }
-
-
 
 pub struct HexSlice<'a>(pub &'a [u8]);
 

@@ -1,7 +1,6 @@
 use num_traits::{Float, One, Zero};
 use std::ops::{Add, Mul};
 
-
 /// peforms a linear interpolation between `a` and `b`.
 pub fn lerp<T, U>(a: T, b: T, amount: U) -> T
 where
@@ -17,9 +16,13 @@ where
     T: Add<Output = T> + Mul<U, Output = T>,
     U: Float + Zero + One,
 {
-    lerp(a, b, match amount {
-        amount if amount < U::zero() => U::zero(),
-        amount if amount > U::one() => U::one(),
-        amount => amount,
-    })
+    lerp(
+        a,
+        b,
+        match amount {
+            amount if amount < U::zero() => U::zero(),
+            amount if amount > U::one() => U::one(),
+            amount => amount,
+        },
+    )
 }

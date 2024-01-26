@@ -3,7 +3,6 @@ use winapi::shared::winerror::SUCCEEDED;
 
 use crate::os::win::ComPtr;
 
-
 /// calls a `function(..., *mut out_value) -> code`, transforming its return value into a `Result<T, std::io::Error>`.
 ///
 /// # remarks.
@@ -54,7 +53,6 @@ where
     }
 }
 
-
 /// calls a `function(..., *mut out_value) -> code`, transforming its return value into a `Result<ComPtr<T>,
 /// std::io::Error>`.
 ///
@@ -93,7 +91,9 @@ where
 /// if `function(..., *mut T)` was:
 ///     - success: returns ComPtr<T>
 ///     - failure: returns TStatusCode
-pub fn com_raw_call<TFunction, TStatusCode, T>(function: TFunction) -> Result<ComPtr<T>, TStatusCode>
+pub fn com_raw_call<TFunction, TStatusCode, T>(
+    function: TFunction,
+) -> Result<ComPtr<T>, TStatusCode>
 where
     TFunction: FnOnce(*mut *mut T) -> TStatusCode,
     TStatusCode: HrLikeStatusCode,
@@ -106,7 +106,6 @@ where
         false => Err(returned),
     }
 }
-
 
 /// a trait that describes how we treat return values in a hr-style function call.
 pub trait HrLikeStatusCode: Copy {

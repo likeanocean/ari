@@ -6,5 +6,4 @@ mod a;
 #[path = "unix.rs"]
 mod a;
 
-
 pub(crate) use self::a::*;

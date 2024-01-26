@@ -4,7 +4,6 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
-
 /// the number of nanoseconds in a microsecond.
 pub const NANOSECONDS_PER_MICROSECOND: u64 = 1_000;
 
@@ -32,10 +31,9 @@ pub const SECONDS_PER_DAY: u64 = 86_400;
 /// the number of (non-leap) seconds in a week.
 pub const SECONDS_PER_WEEK: u64 = 604_800;
 
-
 #[derive(Debug, Clone, Copy)]
 pub struct Stopwatch {
-    elapsed: Duration,        // the recorded elapsed duration before the most recent stopwatch start.
+    elapsed: Duration, // the recorded elapsed duration before the most recent stopwatch start.
     started: Option<Instant>, // the instant at which it was started. when none, stopwatch is not running.
 }
 
@@ -121,7 +119,6 @@ impl Display for Stopwatch {
     }
 }
 
-
 /// a simple fps clock / fps counter.
 ///
 /// # examples.
@@ -138,14 +135,14 @@ impl Display for Stopwatch {
 /// assert_eq!(clock.fps() > 0, true);
 /// ```
 pub struct FpsClock {
-    queue:  VecDeque<Instant>,
+    queue: VecDeque<Instant>,
     frames: Arc<AtomicUsize>,
 }
 
 impl FpsClock {
     pub fn new() -> FpsClock {
         FpsClock {
-            queue:  VecDeque::with_capacity(1024),
+            queue: VecDeque::with_capacity(1024),
             frames: Arc::new(AtomicUsize::new(0)),
         }
     }
@@ -176,10 +173,12 @@ impl FpsClock {
 
 impl Debug for FpsClock {
     fn fmt(&self, formatter: &mut Formatter) -> Result<(), std::fmt::Error> {
-        formatter.debug_struct("FpsClock").field("fps", &self.fps()).finish()
+        formatter
+            .debug_struct("FpsClock")
+            .field("fps", &self.fps())
+            .finish()
     }
 }
-
 
 /// reads the fps value of some `FpsClock`.
 ///
@@ -210,6 +209,9 @@ impl Fps {
 
 impl Debug for Fps {
     fn fmt(&self, formatter: &mut Formatter) -> Result<(), std::fmt::Error> {
-        formatter.debug_struct("Fps").field("fps", &self.value()).finish()
+        formatter
+            .debug_struct("Fps")
+            .field("fps", &self.value())
+            .finish()
     }
 }

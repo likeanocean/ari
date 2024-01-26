@@ -1,8 +1,6 @@
 use std::fmt::{Debug, Formatter};
 use std::marker::PhantomData;
 
-
-
 pub trait GenericHandleDtor<THandle>
 where
     THandle: Copy,
@@ -16,7 +14,7 @@ where
     THandle: Copy + Eq,
     TDestructor: GenericHandleDtor<THandle>,
 {
-    handle:  THandle,
+    handle: THandle,
     phantom: PhantomData<TDestructor>,
 }
 

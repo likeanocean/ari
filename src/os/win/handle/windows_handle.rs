@@ -1,7 +1,6 @@
 use winapi::um::handleapi::CloseHandle;
 use winapi::um::winnt::HANDLE;
 
-
 #[derive(Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct WindowsHandle {
     handle: HANDLE,

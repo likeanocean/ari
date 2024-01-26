@@ -1,14 +1,12 @@
 use rand::seq::SliceRandom;
 use rand::Rng;
 
-
 const LOWERCASE_ALPHABET: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
 const LOWERCASE_ALPHNUMERIC: &[u8] = b"abcdefghijklmnopqrstuvwxyz0123456789";
 
-
 // todo: remove `TRandom: 'a` when lifetime reform is implemented.
 pub struct RandomCharacter<'a, TRandom: 'a> {
-    random:   &'a mut TRandom,
+    random: &'a mut TRandom,
     alphabet: &'a [char],
 }
 
@@ -23,7 +21,6 @@ where
     }
 }
 
-
 pub struct RandomAlphabet<'a, TRandom: 'a> {
     random: &'a mut TRandom,
 }
@@ -35,10 +32,11 @@ where
     type Item = char;
 
     fn next(&mut self) -> Option<char> {
-        LOWERCASE_ALPHABET.choose(&mut self.random).map(|x| *x as char)
+        LOWERCASE_ALPHABET
+            .choose(&mut self.random)
+            .map(|x| *x as char)
     }
 }
-
 
 pub struct RandomAlphanumeric<'a, TRandom: 'a> {
     random: &'a mut TRandom,
@@ -51,15 +49,16 @@ where
     type Item = char;
 
     fn next(&mut self) -> Option<char> {
-        LOWERCASE_ALPHNUMERIC.choose(&mut self.random).map(|x| *x as char)
+        LOWERCASE_ALPHNUMERIC
+            .choose(&mut self.random)
+            .map(|x| *x as char)
     }
 }
-
 
 pub fn string(alphabet: &[char], length: usize) -> String {
     RandomCharacter {
         alphabet: alphabet,
-        random:   &mut rand::thread_rng(),
+        random: &mut rand::thread_rng(),
     }
     .take(length)
     .collect()

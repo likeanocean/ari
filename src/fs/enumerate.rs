@@ -3,13 +3,11 @@ use std::fmt::Debug;
 use std::fs::{DirEntry, FileType, Metadata, ReadDir};
 use std::path::{Path, PathBuf};
 
-
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum SearchOption {
     TopOnly,
     Recursive,
 }
-
 
 pub fn entries(
     path: impl AsRef<Path>,
@@ -32,7 +30,6 @@ pub fn files(
     filtered_entries(path, option, |x| x.is_file())
 }
 
-
 fn filtered_entries(
     path: impl AsRef<Path>,
     option: SearchOption,
@@ -52,15 +49,18 @@ fn filtered_entries(
             let entry = bubble![r];
             let ty = entry.ty();
 
-            if predicate(ty) { Some(Ok(entry)) } else { None }
+            if predicate(ty) {
+                Some(Ok(entry))
+            } else {
+                None
+            }
         })
     })
 }
 
-
 #[derive(Debug)]
 struct Enumerator {
-    stack:     Vec<Directory>,
+    stack: Vec<Directory>,
     recursive: bool,
 }
 
@@ -85,11 +85,11 @@ impl Iterator for Enumerator {
             match self.stack.last_mut().expect("!").next() {
                 None => {
                     self.stack.pop();
-                },
+                }
 
                 Some(Err(error)) => {
                     return Some(Err(error));
-                },
+                }
 
                 Some(Ok(entry)) => {
                     if self.recursive && entry.ty().is_dir() {
@@ -100,14 +100,13 @@ impl Iterator for Enumerator {
                     }
 
                     return Some(Ok(entry));
-                },
+                }
             }
         }
 
         None
     }
 }
-
 
 // an iterator that yields a sequence of fs-entries (instead of `std::fs::DirEntry`).
 #[derive(Debug)]
@@ -134,12 +133,10 @@ impl Iterator for Directory {
     }
 }
 
-
-
 // an fs-entry.
 #[derive(Debug)]
 pub struct FsEntry {
-    ty:    FileType,
+    ty: FileType,
     entry: DirEntry,
 }
 

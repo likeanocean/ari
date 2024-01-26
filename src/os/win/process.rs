@@ -11,7 +11,6 @@ use crate::os::win::internal::ntdll::{NtQuerySystemInformation, SystemProcessInf
 use crate::os::win::internal::ntdll::{SYSTEM_PROCESS_INFORMATION, SYSTEM_THREAD_INFORMATION};
 use crate::os::win::WindowsHandle;
 
-
 impl Process {
     pub fn current() -> Vec<Process> {
         unimplemented!();
@@ -49,8 +48,6 @@ impl Process {
     }
 }
 
-
-
 #[derive(Clone)]
 pub struct ProcessCollection {
     data: Vec<u8>,
@@ -77,10 +74,8 @@ impl Debug for ProcessCollection {
     }
 }
 
-
-
 pub struct ProcessCollectionOwnedIterator {
-    data:  Vec<u8>,
+    data: Vec<u8>,
     index: usize,
 }
 
@@ -109,8 +104,6 @@ impl Iterator for ProcessCollectionOwnedIterator {
     }
 }
 
-
-
 pub struct ProcessCollectionIterator<'a> {
     data: &'a [u8],
 }
@@ -135,12 +128,16 @@ impl<'a> Iterator for ProcessCollectionIterator<'a> {
     }
 }
 
-
-
 struct IteratorImpl;
 
 impl IteratorImpl {
-    fn step(data: &[u8]) -> Option<(usize, &SYSTEM_PROCESS_INFORMATION, &[SYSTEM_THREAD_INFORMATION])> {
+    fn step(
+        data: &[u8],
+    ) -> Option<(
+        usize,
+        &SYSTEM_PROCESS_INFORMATION,
+        &[SYSTEM_THREAD_INFORMATION],
+    )> {
         if data.is_empty() {
             None
         } else {
@@ -161,8 +158,6 @@ impl IteratorImpl {
     }
 }
 
-
-
 #[derive(Clone)]
 pub struct Process {
     process: SYSTEM_PROCESS_INFORMATION,
@@ -170,7 +165,10 @@ pub struct Process {
 }
 
 impl Process {
-    fn new(process: SYSTEM_PROCESS_INFORMATION, threads: Vec<SYSTEM_THREAD_INFORMATION>) -> Process {
+    fn new(
+        process: SYSTEM_PROCESS_INFORMATION,
+        threads: Vec<SYSTEM_THREAD_INFORMATION>,
+    ) -> Process {
         Process { process, threads }
     }
 
@@ -201,8 +199,6 @@ impl Debug for Process {
     }
 }
 
-
-
 #[derive(Clone)]
 pub struct ProcessS<'a> {
     process: &'a SYSTEM_PROCESS_INFORMATION,
@@ -210,7 +206,10 @@ pub struct ProcessS<'a> {
 }
 
 impl<'a> ProcessS<'a> {
-    fn new(process: &'a SYSTEM_PROCESS_INFORMATION, threads: &'a [SYSTEM_THREAD_INFORMATION]) -> ProcessS<'a> {
+    fn new(
+        process: &'a SYSTEM_PROCESS_INFORMATION,
+        threads: &'a [SYSTEM_THREAD_INFORMATION],
+    ) -> ProcessS<'a> {
         ProcessS { process, threads }
     }
 
@@ -246,8 +245,6 @@ impl Into<Process> for ProcessS<'_> {
         Process::new(self.process.clone(), self.threads.to_owned())
     }
 }
-
-
 
 struct ProcessImpl;
 
@@ -289,7 +286,9 @@ impl ProcessImpl {
             let mut data = [0u16; 1024];
             let mut length = data.len() as u32;
 
-            match QueryFullProcessImageNameW(handle.as_raw(), 0, data.as_mut_ptr(), &mut length) != 0 {
+            match QueryFullProcessImageNameW(handle.as_raw(), 0, data.as_mut_ptr(), &mut length)
+                != 0
+            {
                 true => Ok(OsString::from_wide(&data[..length as usize]).into()),
                 false => Err(std::io::Error::last_os_error()),
             }
@@ -315,8 +314,6 @@ impl ProcessImpl {
             .finish()
     }
 }
-
-
 
 #[derive(Clone)]
 pub struct Thread {
@@ -382,8 +379,6 @@ impl Debug for Thread {
         ThreadImpl::fmt("Thread", &self.data, formatter)
     }
 }
-
-
 
 #[derive(Clone)]
 pub struct ThreadS<'a> {
@@ -456,8 +451,6 @@ impl Into<Thread> for ThreadS<'_> {
     }
 }
 
-
-
 struct ThreadImpl;
 
 impl ThreadImpl {
@@ -509,7 +502,11 @@ impl ThreadImpl {
         ()
     }
 
-    fn fmt(name: &str, x: &SYSTEM_THREAD_INFORMATION, formatter: &mut Formatter) -> Result<(), std::fmt::Error> {
+    fn fmt(
+        name: &str,
+        x: &SYSTEM_THREAD_INFORMATION,
+        formatter: &mut Formatter,
+    ) -> Result<(), std::fmt::Error> {
         formatter
             .debug_struct(name)
             .field("thread_id", &ThreadImpl::thread_id(x))
@@ -527,8 +524,6 @@ impl ThreadImpl {
             .finish()
     }
 }
-
-
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ThreadState {
@@ -571,8 +566,6 @@ impl From<u32> for ThreadState {
         }
     }
 }
-
-
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ThreadWaitReason {

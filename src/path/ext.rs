@@ -1,6 +1,5 @@
 use std::path::{Path, PathBuf};
 
-
 pub trait PathBufExt {
     /// appends a `path` to self. always treats `path` as a relative path.
     ///

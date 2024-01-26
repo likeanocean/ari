@@ -3,7 +3,6 @@ use std::num::Wrapping;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
 
-
 pub trait ResetEvent {
     /// sets the state of the event to nonsignaled, causing threads to block.
     ///
@@ -32,7 +31,6 @@ pub trait ResetEvent {
     }
 }
 
-
 /// a thread waits for a signal by calling waitone on the autoresetevent. if the autoresetevent is in the non-signaled
 /// state, the thread blocks, waiting for the thread that currently controls the resource to signal that the resource is
 /// available by calling set.
@@ -44,14 +42,14 @@ pub trait ResetEvent {
 /// if a thread calls waitone while the autoresetevent is in the signaled state, the thread does not block. the
 /// autoresetevent releases the thread immediately and returns to the non-signaled state.
 pub struct AutoResetEvent {
-    value:     Mutex<bool>,
+    value: Mutex<bool>,
     condition: Condvar,
 }
 
 impl AutoResetEvent {
     pub fn new(signalled: bool) -> AutoResetEvent {
         AutoResetEvent {
-            value:     Mutex::new(signalled),
+            value: Mutex::new(signalled),
             condition: Condvar::new(),
         }
     }
@@ -91,7 +89,6 @@ impl ResetEvent for AutoResetEvent {
     }
 }
 
-
 /// manualresetevent allows threads to communicate with each other by signaling. typically, this communication concerns
 /// a task which one thread must complete before other threads can proceed.
 ///
@@ -107,7 +104,7 @@ impl ResetEvent for AutoResetEvent {
 /// you can control the initial state of a manualresetevent by passing a boolean value to the constructor, true if the
 /// initial state is signaled and false otherwise.
 pub struct ManualResetEvent {
-    value:     Mutex<ManualResetEventData>,
+    value: Mutex<ManualResetEventData>,
     condition: Condvar,
 }
 
@@ -116,14 +113,14 @@ impl ManualResetEvent {
         let id = Wrapping(0);
 
         ManualResetEvent {
-            value:     Mutex::new(ManualResetEventData { signalled, id }),
+            value: Mutex::new(ManualResetEventData { signalled, id }),
             condition: Condvar::new(),
         }
     }
 }
 
 struct ManualResetEventData {
-    id:        Wrapping<usize>,
+    id: Wrapping<usize>,
     signalled: bool,
 }
 
@@ -164,7 +161,6 @@ impl ResetEvent for ManualResetEvent {
     }
 }
 
-
 /// an atomic boolean that always uses acquire and release semantics.
 #[derive(Debug)]
 pub struct AtomicArBool {
@@ -194,7 +190,6 @@ impl Default for AtomicArBool {
         }
     }
 }
-
 
 /// an atomic boolean that uses relaxed semantics.
 #[derive(Debug)]

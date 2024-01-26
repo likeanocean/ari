@@ -1,6 +1,5 @@
 use std::io::Read;
 
-
 /// reads stdin until it encounters a new line, consuming it.
 pub fn read_enter_key() -> Result<(), std::io::Error> {
     let mut stream = std::io::stdin();

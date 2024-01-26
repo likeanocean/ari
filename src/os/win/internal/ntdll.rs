@@ -1,10 +1,14 @@
-#![allow(dead_code, non_camel_case_types, non_snake_case, non_upper_case_globals)]
+#![allow(
+    dead_code,
+    non_camel_case_types,
+    non_snake_case,
+    non_upper_case_globals
+)]
 
 use winapi::shared::basetsd::SIZE_T;
 use winapi::shared::ntdef::{HANDLE, LARGE_INTEGER, LONG, NTSTATUS, PCWSTR, PULONG};
 use winapi::shared::ntdef::{PUNICODE_STRING, PVOID, UCHAR, ULONG, ULONGLONG};
 use winapi::shared::ntdef::{UNICODE_STRING, USHORT};
-
 
 #[link(name = "ntdll")]
 extern "system" {
@@ -22,28 +26,26 @@ extern "system" {
     pub fn RtlInitUnicodeString(DestinationString: PUNICODE_STRING, SourceString: PCWSTR);
 }
 
-
-
 #[repr(C)]
 #[derive(Clone)]
 pub struct RTL_PROCESS_MODULE_INFORMATION {
-    pub Section:          HANDLE,
-    pub MappedBase:       PVOID,
-    pub ImageBase:        PVOID,
-    pub ImageSize:        ULONG,
-    pub Flags:            ULONG,
-    pub LoadOrderIndex:   USHORT,
-    pub InitOrderIndex:   USHORT,
-    pub LoadCount:        USHORT,
+    pub Section: HANDLE,
+    pub MappedBase: PVOID,
+    pub ImageBase: PVOID,
+    pub ImageSize: ULONG,
+    pub Flags: ULONG,
+    pub LoadOrderIndex: USHORT,
+    pub InitOrderIndex: USHORT,
+    pub LoadCount: USHORT,
     pub OffsetToFileName: USHORT,
-    pub FullPathName:     [UCHAR; 256],
+    pub FullPathName: [UCHAR; 256],
 }
 
 #[repr(C)]
 #[derive(Clone)]
 pub struct RTL_PROCESS_MODULES {
     pub NumberOfModules: ULONG,
-    pub Modules:         [RTL_PROCESS_MODULE_INFORMATION; 0],
+    pub Modules: [RTL_PROCESS_MODULE_INFORMATION; 0],
 }
 
 pub type KPRIORITY = ULONG;
@@ -53,63 +55,63 @@ pub type PRTL_PROCESS_MODULES = *mut RTL_PROCESS_MODULES;
 #[repr(C)]
 #[derive(Clone)]
 pub struct SYSTEM_PROCESS_INFORMATION {
-    pub NextEntryOffset:              ULONG,
-    pub NumberOfThreads:              ULONG,
-    pub WorkingSetPrivateSize:        LARGE_INTEGER,
-    pub HardFaultCount:               ULONG,
+    pub NextEntryOffset: ULONG,
+    pub NumberOfThreads: ULONG,
+    pub WorkingSetPrivateSize: LARGE_INTEGER,
+    pub HardFaultCount: ULONG,
     pub NumberOfThreadsHighWatermark: ULONG,
-    pub CycleTime:                    ULONGLONG,
-    pub CreateTime:                   LARGE_INTEGER,
-    pub UserTime:                     LARGE_INTEGER,
-    pub KernelTime:                   LARGE_INTEGER,
-    pub ImageName:                    UNICODE_STRING,
-    pub BasePriority:                 KPRIORITY,
-    pub UniqueProcessId:              HANDLE,
+    pub CycleTime: ULONGLONG,
+    pub CreateTime: LARGE_INTEGER,
+    pub UserTime: LARGE_INTEGER,
+    pub KernelTime: LARGE_INTEGER,
+    pub ImageName: UNICODE_STRING,
+    pub BasePriority: KPRIORITY,
+    pub UniqueProcessId: HANDLE,
     pub InheritedFromUniqueProcessId: PVOID,
-    pub HandleCount:                  ULONG,
-    pub SessionId:                    ULONG,
-    pub UniqueProcessKey:             ULONG,
-    pub PeakVirtualSize:              SIZE_T,
-    pub VirtualSize:                  SIZE_T,
-    pub PageFaultCount:               ULONG,
-    pub PeakWorkingSetSize:           SIZE_T,
-    pub WorkingSetSize:               SIZE_T,
-    pub Reserved5:                    PVOID,
-    pub QuotaPagedPoolUsage:          SIZE_T,
-    pub Reserved6:                    PVOID,
-    pub QuotaNonPagedPoolUsage:       SIZE_T,
-    pub PagefileUsage:                SIZE_T,
-    pub PeakPagefileUsage:            SIZE_T,
-    pub PrivatePageCount:             SIZE_T,
-    pub ReadOperationCount:           LARGE_INTEGER,
-    pub WriteOperationCount:          LARGE_INTEGER,
-    pub OtherOperationCount:          LARGE_INTEGER,
-    pub ReadTransferCount:            LARGE_INTEGER,
-    pub WriteTransferCount:           LARGE_INTEGER,
-    pub OtherTransferCount:           LARGE_INTEGER,
+    pub HandleCount: ULONG,
+    pub SessionId: ULONG,
+    pub UniqueProcessKey: ULONG,
+    pub PeakVirtualSize: SIZE_T,
+    pub VirtualSize: SIZE_T,
+    pub PageFaultCount: ULONG,
+    pub PeakWorkingSetSize: SIZE_T,
+    pub WorkingSetSize: SIZE_T,
+    pub Reserved5: PVOID,
+    pub QuotaPagedPoolUsage: SIZE_T,
+    pub Reserved6: PVOID,
+    pub QuotaNonPagedPoolUsage: SIZE_T,
+    pub PagefileUsage: SIZE_T,
+    pub PeakPagefileUsage: SIZE_T,
+    pub PrivatePageCount: SIZE_T,
+    pub ReadOperationCount: LARGE_INTEGER,
+    pub WriteOperationCount: LARGE_INTEGER,
+    pub OtherOperationCount: LARGE_INTEGER,
+    pub ReadTransferCount: LARGE_INTEGER,
+    pub WriteTransferCount: LARGE_INTEGER,
+    pub OtherTransferCount: LARGE_INTEGER,
 }
 
 #[repr(C)]
 #[derive(Clone)]
 pub struct CLIENT_ID {
     pub UniqueProcess: HANDLE,
-    pub UniqueThread:  HANDLE,
+    pub UniqueThread: HANDLE,
 }
 
 #[repr(C)]
 #[derive(Clone)]
 pub struct SYSTEM_THREAD_INFORMATION {
-    pub KernelTime:      LARGE_INTEGER,
-    pub UserTime:        LARGE_INTEGER,
-    pub CreateTime:      LARGE_INTEGER,
-    pub WaitTime:        ULONG,
-    pub StartAddress:    PVOID,
-    pub ClientId:        CLIENT_ID,
-    pub Priority:        KPRIORITY,
-    pub BasePriority:    LONG,
+    pub KernelTime: LARGE_INTEGER,
+    pub UserTime: LARGE_INTEGER,
+    pub CreateTime: LARGE_INTEGER,
+    pub WaitTime: ULONG,
+    pub StartAddress: PVOID,
+    pub ClientId: CLIENT_ID,
+    pub Priority: KPRIORITY,
+    pub BasePriority: LONG,
     pub ContextSwitches: ULONG,
-    pub ThreadState:     ULONG,
-    pub WaitReason:      ULONG,
+    pub ThreadState: ULONG,
+    pub WaitReason: ULONG,
 }
 
 pub const SystemBasicInformation: u32 = 0x00;

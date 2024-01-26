@@ -7,19 +7,16 @@ pub mod gdi;
 pub mod hr;
 pub mod process;
 
-
 pub use self::com::{ComPtr, Iid};
 pub use self::gdi::GdiObject;
 pub use self::handle::{GenericHandle, GenericHandleDtor, WindowsHandle};
 pub use self::library::{module_handle, Library, Symbol};
-
 
 use std::ffi::{OsStr, OsString};
 use std::os::windows::ffi::{OsStrExt, OsStringExt};
 use winapi::um::dwmapi::DwmIsCompositionEnabled;
 use winapi::um::sysinfoapi::GetVersionExW;
 use winapi::um::winnt::OSVERSIONINFOW;
-
 
 // :: initialization.
 
@@ -29,7 +26,6 @@ pub(crate) fn initialize() {
     crate::os::win::internal::dpi::activate_dpi_awareness();
 }
 
-
 pub fn to_utf16(string: impl AsRef<OsStr>) -> Vec<u16> {
     string.as_ref().encode_wide().collect()
 }
@@ -37,7 +33,6 @@ pub fn to_utf16(string: impl AsRef<OsStr>) -> Vec<u16> {
 pub fn to_utf16_null(string: impl AsRef<OsStr>) -> Vec<u16> {
     string.as_ref().encode_wide().chain(Some(0)).collect()
 }
-
 
 pub fn from_utf16(data: &[u16]) -> OsString {
     OsString::from_wide(data)
@@ -48,7 +43,6 @@ pub fn from_utf16_null(data: &[u16]) -> OsString {
 
     OsString::from_wide(&data[..length])
 }
-
 
 pub unsafe fn from_utf16_ptr(data: *const u16, length: usize) -> OsString {
     assert![!data.is_null()];
@@ -69,13 +63,11 @@ pub unsafe fn from_utf16_ptr_null(data: *const u16) -> OsString {
     OsString::from_wide(slice)
 }
 
-
 // :: os versions and features.
 
 pub fn aero_enabled() -> Result<bool, std::io::Error> {
     unsafe { crate::os::win::hr::call(|x| DwmIsCompositionEnabled(x)).map(|x| x != 0) }
 }
-
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct OsVersion {
@@ -86,7 +78,11 @@ pub struct OsVersion {
 
 impl OsVersion {
     pub const fn new(major: usize, minor: usize, build: usize) -> OsVersion {
-        OsVersion { major, minor, build }
+        OsVersion {
+            major,
+            minor,
+            build,
+        }
     }
 
     pub const fn windows_7() -> OsVersion {

@@ -7,12 +7,10 @@ use std::path::Path;
 
 use crate::fs::VolumeInformation;
 
-
 /// returns the number of bytes allocated for this file.
 pub(crate) fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
     file.metadata().map(|x| x.blocks() as u64 * 512)
 }
-
 
 // #[cfg(any(target_os = "linux", target_os = "nacl"))]
 // crate fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io::Error> {
@@ -42,10 +40,10 @@ pub(crate) fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io:
 
     if size > metadata.blocks() as u64 * 512 {
         let mut fstore = libc::fstore_t {
-            fst_flags:      libc::F_ALLOCATECONTIG,
-            fst_posmode:    libc::F_PEOFPOSMODE,
-            fst_offset:     0,
-            fst_length:     size as libc::off_t,
+            fst_flags: libc::F_ALLOCATECONTIG,
+            fst_posmode: libc::F_PEOFPOSMODE,
+            fst_offset: 0,
+            fst_length: size as libc::off_t,
             fst_bytesalloc: 0,
         };
 
@@ -74,7 +72,6 @@ pub(crate) fn set_allocation_size(file: &File, size: u64) -> Result<(), std::io:
     Ok(())
 }
 
-
 pub(crate) fn get_volume_information(path: &Path) -> Result<VolumeInformation, std::io::Error> {
     let data = path.as_os_str().as_bytes();
     let string = match CString::new(data) {
@@ -88,9 +85,9 @@ pub(crate) fn get_volume_information(path: &Path) -> Result<VolumeInformation, s
         // cast is necessary for platforms where libc::char != u8.
         if libc::statvfs(string.as_ptr() as *const _, &mut stat) == 0 {
             let information = VolumeInformation {
-                free_bytes:             stat.f_frsize as u64 * stat.f_bfree as u64,
-                available_bytes:        stat.f_frsize as u64 * stat.f_bavail as u64,
-                total_bytes:            stat.f_frsize as u64 * stat.f_blocks as u64,
+                free_bytes: stat.f_frsize as u64 * stat.f_bfree as u64,
+                available_bytes: stat.f_frsize as u64 * stat.f_bavail as u64,
+                total_bytes: stat.f_frsize as u64 * stat.f_blocks as u64,
                 allocation_granularity: stat.f_frsize as u64,
             };
 

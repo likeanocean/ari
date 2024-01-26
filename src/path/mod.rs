@@ -2,14 +2,11 @@ pub mod ext;
 pub mod macros;
 pub mod util;
 
-
 pub use self::ext::*;
-
 
 use std::borrow::Cow;
 use std::ffi::OsStr;
 use std::path::{Component, Path, Prefix};
-
 
 // returns the volume name for some path, intended for display.
 pub fn volume_name(path: &Path) -> Option<String> {
@@ -21,7 +18,9 @@ pub fn volume_name(path: &Path) -> Option<String> {
         let volume = match component {
             Component::Prefix(prefix) => match prefix.kind() {
                 Prefix::Verbatim(name) => format!("{}", display(name)),
-                Prefix::VerbatimUNC(server, share) => format!("{}\\{}", display(server), display(share)),
+                Prefix::VerbatimUNC(server, share) => {
+                    format!("{}\\{}", display(server), display(share))
+                }
                 Prefix::VerbatimDisk(disk) => format!("{}:\\", disk as char),
                 Prefix::DeviceNS(namespace) => format!("{}", display(namespace)),
                 Prefix::UNC(server, share) => format!("{}\\{}\\", display(server), display(share)),

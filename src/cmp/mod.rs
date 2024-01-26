@@ -1,6 +1,5 @@
 use std::cmp::{Ordering, PartialOrd};
 
-
 /// compares and returns the minimum of two values.
 ///
 /// returns the first argument if the comparison determines them to be equal.
@@ -41,7 +40,6 @@ where
     }
 }
 
-
 /// a comparison function for floating point numbers.
 ///
 /// nan values are ordered at the end.
@@ -65,7 +63,6 @@ where
         (_, _) => a.partial_cmp(b).unwrap(),
     }
 }
-
 
 pub trait Float {
     fn is_nan(self) -> bool;

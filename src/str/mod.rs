@@ -1,7 +1,6 @@
 use std::string::FromUtf16Error;
 use unicode_width::UnicodeWidthStr;
 
-
 #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Clone, Copy)]
 pub enum TextAlignment {
     Left,
@@ -55,7 +54,6 @@ impl PadString for str {
     }
 }
 
-
 pub fn to_utf16(string: &str) -> Vec<u16> {
     string.encode_utf16().collect()
 }
@@ -63,7 +61,6 @@ pub fn to_utf16(string: &str) -> Vec<u16> {
 pub fn to_utf16_null(string: &str) -> Vec<u16> {
     string.encode_utf16().chain(Some(0)).collect()
 }
-
 
 pub fn from_utf16(data: &[u16]) -> Result<String, FromUtf16Error> {
     String::from_utf16(data)
@@ -75,7 +72,6 @@ pub fn from_utf16_null(data: &[u16]) -> Result<String, FromUtf16Error> {
     String::from_utf16(data)
 }
 
-
 pub fn from_utf16_lossy(data: &[u16]) -> String {
     String::from_utf16_lossy(data)
 }
@@ -85,7 +81,6 @@ pub fn from_utf16_lossy_null(data: &[u16]) -> String {
 
     String::from_utf16_lossy(data)
 }
-
 
 fn utf16_extent(data: &[u16]) -> &[u16] {
     let length = data.iter().position(|x| *x == 0).unwrap_or(data.len());

@@ -6,7 +6,6 @@ use winapi::shared::guiddef::{IID, REFIID};
 use winapi::shared::ntdef::HRESULT;
 use winapi::um::unknwnbase::IUnknown;
 
-
 #[repr(C)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Iid {
@@ -54,7 +53,6 @@ impl DerefMut for Iid {
         unsafe { &mut *(self as *mut Iid as *mut IID) }
     }
 }
-
 
 /// a com pointer.
 pub struct ComPtr<T> {
@@ -109,7 +107,8 @@ impl<T> ComPtr<T> {
         unsafe {
             let mut pointer = std::ptr::null_mut::<U>();
             let unknown = self.as_unknown();
-            let hr = (*unknown).QueryInterface(iid, &mut pointer as *mut *mut _ as *mut *mut c_void);
+            let hr =
+                (*unknown).QueryInterface(iid, &mut pointer as *mut *mut _ as *mut *mut c_void);
 
             match hr >= 0 {
                 true => Ok(ComPtr::new(pointer)),
@@ -165,7 +164,9 @@ impl<T> Clone for ComPtr<T> {
         unsafe {
             reference_add(self.pointer.cast());
 
-            ComPtr { pointer: self.pointer }
+            ComPtr {
+                pointer: self.pointer,
+            }
         }
     }
 }
@@ -193,7 +194,6 @@ impl<T> Debug for ComPtr<T> {
             .finish()
     }
 }
-
 
 pub unsafe fn reference_add(mut object: NonNull<IUnknown>) {
     object.as_mut().AddRef();

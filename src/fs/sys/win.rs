@@ -10,8 +10,6 @@ use winapi::um::winbase::GetFileInformationByHandleEx;
 
 use crate::fs::VolumeInformation;
 
-
-
 /// returns the number of bytes allocated for this file.
 pub(crate) fn get_allocation_size(file: &File) -> Result<u64, std::io::Error> {
     unsafe {
@@ -80,13 +78,12 @@ pub(crate) fn get_volume_information(path: &Path) -> Result<VolumeInformation, s
         let total_bytes = cluster_size * total_clusters as u64;
 
         return Ok(VolumeInformation {
-            free_bytes:             available_bytes,
-            available_bytes:        available_bytes,
-            total_bytes:            total_bytes,
+            free_bytes: available_bytes,
+            available_bytes: available_bytes,
+            total_bytes: total_bytes,
             allocation_granularity: cluster_size,
         });
     }
-
 
     fn put_volume_into(into: &mut [u16], path: &Path) -> Result<(), std::io::Error> {
         let utf16 = crate::os::win::to_utf16_null(path);

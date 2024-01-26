@@ -1,6 +1,5 @@
 use std::io::Write;
 
-
 /// clears `stdout`.
 pub fn clear() -> Result<(), std::io::Error> {
     clear_into(&mut std::io::stdout())

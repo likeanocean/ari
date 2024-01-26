@@ -3,7 +3,6 @@ use std::ops::{Deref, DerefMut};
 use std::ptr::NonNull;
 use winapi::um::wingdi::DeleteObject;
 
-
 #[derive(Debug)]
 pub struct GdiObject<T> {
     pointer: NonNull<T>,
@@ -45,7 +44,6 @@ impl<T> Drop for GdiObject<T> {
         }
     }
 }
-
 
 /// calls `function`, which returns an instance of `T` on success or `null` on failure.
 ///

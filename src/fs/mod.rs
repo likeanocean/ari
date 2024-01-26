@@ -3,12 +3,10 @@ mod sys;
 
 pub use self::enumerate::*;
 
-
 use crate::io::ReadExt;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
-
 
 // returns true if the file at `path` exists, and it is a file.
 pub fn file_exists(path: impl AsRef<Path>) -> bool {
@@ -25,7 +23,6 @@ pub fn directory_exists(path: impl AsRef<Path>) -> bool {
         Err(_) => false,
     }
 }
-
 
 /// opens a binary file, reads the contents of the file into a vec<u8>, and then closes the file.
 pub fn read_all_bytes(path: impl AsRef<Path>) -> Result<Vec<u8>, std::io::Error> {
@@ -69,7 +66,6 @@ pub fn write_all_text(path: impl AsRef<Path>, data: String) -> Result<(), std::i
     write_all_bytes(path, &data.into_bytes())
 }
 
-
 /// replaces `source` file with `destination` file, using `backup` as an intermediatary backup.
 ///
 /// if `source`, `destination` or `backup` are on different volumes, this method will likely fail.
@@ -94,14 +90,13 @@ pub fn replace(
         Ok(()) => {
             std::fs::remove_file(backup).ok();
             Ok(())
-        },
+        }
         Err(e) => {
             std::fs::rename(backup, source).ok();
             Err(e)
-        },
+        }
     }
 }
-
 
 // extension methods for `std::fs::File`
 pub trait FileExt {
@@ -123,12 +118,11 @@ impl FileExt for File {
     }
 }
 
-
 #[derive(Clone, Debug)]
 pub struct VolumeInformation {
-    pub free_bytes:             u64,
-    pub available_bytes:        u64,
-    pub total_bytes:            u64,
+    pub free_bytes: u64,
+    pub available_bytes: u64,
+    pub total_bytes: u64,
     pub allocation_granularity: u64,
 }
 

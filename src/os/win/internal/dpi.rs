@@ -4,7 +4,6 @@ use winapi::shared::winerror::S_OK;
 
 use crate::os::win::Library;
 
-
 macro_rules! activate {
     ($module: expr, $function: ty[$param: expr] == $ok: expr) => {
         unsafe {
@@ -22,12 +21,14 @@ macro_rules! activate {
     };
 }
 
-
 pub(crate) fn activate_dpi_awareness() {
     type SetProcessDpiAwareness = extern "system" fn(value: u32) -> HRESULT;
     type SetProcessDpiAwarenessContext = extern "system" fn(value: usize) -> BOOL;
 
-    activate!("user32.dll", SetProcessDpiAwarenessContext[-4isize as usize] == TRUE); // per-monitor-v2 | windows 10 1703+
+    activate!(
+        "user32.dll",
+        SetProcessDpiAwarenessContext[-4isize as usize] == TRUE
+    ); // per-monitor-v2 | windows 10 1703+
     activate!("shcore.dll", SetProcessDpiAwareness[2] == S_OK); // per-monitor-v1 | windows 8.1
     activate!("shcore.dll", SetProcessDpiAwareness[1] == S_OK); // system-aware | windows 8.1
 }

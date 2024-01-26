@@ -2,7 +2,6 @@ use ring::digest::{Algorithm, Context, Digest};
 use std::io::Read;
 use std::ops::Deref;
 
-
 pub enum HashAlgorithm {
     Sha1,
     Sha256,
@@ -20,7 +19,6 @@ impl Into<&'static Algorithm> for HashAlgorithm {
         }
     }
 }
-
 
 pub struct IncrementalHash {
     context: Context,
@@ -45,7 +43,6 @@ impl IncrementalHash {
     }
 }
 
-
 pub struct Hash {
     digest: Digest,
 }
@@ -65,7 +62,6 @@ impl Deref for Hash {
         self.digest.as_ref()
     }
 }
-
 
 pub fn hash_slice(data: &[u8], algorithm: HashAlgorithm) -> Hash {
     let digest = ring::digest::digest(algorithm.into(), data);

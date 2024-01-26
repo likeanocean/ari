@@ -1,9 +1,7 @@
 pub mod stdin;
 
-
 use std::io::{Read, Seek, SeekFrom};
 use std::mem::MaybeUninit;
-
 
 pub trait ReadExt: Read {
     #[inline]
@@ -37,7 +35,6 @@ pub trait ReadExt: Read {
         Ok(data)
     }
 
-
     // :: const generics workarounds
     //     when const generics arrive, refactor into generic code.
 
@@ -62,10 +59,7 @@ pub trait ReadExt: Read {
     }
 }
 
-impl<T> ReadExt for T where T: Read + ?Sized
-{
-}
-
+impl<T> ReadExt for T where T: Read + ?Sized {}
 
 pub trait SeekExt: Seek {
     fn position(&mut self) -> Result<u64, std::io::Error> {
@@ -73,6 +67,4 @@ pub trait SeekExt: Seek {
     }
 }
 
-impl<T> SeekExt for T where T: Seek + ?Sized
-{
-}
+impl<T> SeekExt for T where T: Seek + ?Sized {}

@@ -1,6 +1,5 @@
 use std::panic::AssertUnwindSafe;
 
-
 /// invokes a closure, aborting the process if a panic occurs.
 pub fn catch_abort<TFunction, TReturn>(function: TFunction) -> TReturn
 where
@@ -9,7 +8,6 @@ where
     // "unwind safe" because we are immediately aborting after panic.
     std::panic::catch_unwind(AssertUnwindSafe(function)).unwrap_or_else(|_| std::process::abort())
 }
-
 
 /// a contiguous slice of `T` pointed to by `source`. ffi compatible.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
