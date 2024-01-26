@@ -1,6 +1,6 @@
 [package]
 name = "ari"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["ari <ari@sent.com>"]
 description = "ari. the extras library."
 
